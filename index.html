@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Will you be my Valentine? 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #ffd9e8 0%, #ffc1cc 40%, #fff3e6 100%);
+      font-family: 'Quicksand', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .dark-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .floating-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .float-item {
+      position: absolute;
+      font-size: 1.5rem;
+      user-select: none;
+      animation: float 8s linear infinite;
+      bottom: -10%;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(-100vh) rotate(20deg); opacity: 0; }
+    }
+    .content {
+      position: relative;
+      z-index: 5;
+      max-width: 800px;
+      width: 90%;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(8px);
+      border-radius: 60px 60px 30px 30px;
+      box-shadow: 0 20px 40px rgba(220,100,120,0.2);
+      padding: 2rem 1.5rem 3rem;
+      text-align: center;
+      border: 2px solid rgba(255,255,255,0.6);
+      margin: 20px auto;
+    }
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.5rem;
+      color: #b13e5c;
+      text-shadow: 4px 4px 0 #ffe0e5;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+    }
+    .subhead {
+      font-size: 1.6rem;
+      color: #a5334f;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    .subhead span {
+      display: inline-block;
+      animation: sparkle 1.8s infinite;
+    }
+    @keyframes sparkle {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); text-shadow: 0 0 8px gold; }
+    }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+      margin: 2rem 0 1rem;
+      position: relative;
+      min-height: 250px; /* extra space for movement */
+      align-items: center;
+      border: 1px dashed rgba(255,0,0,0.2); /* visual guide (can be removed) */
+    }
+    .btn {
+      border: none;
+      background: #ffe2eb;
+      padding: 20px 45px;
+      font-size: 2.5rem;
+      font-family: 'Dancing Script', cursive;
+      font-weight: 700;
+      border-radius: 200px 200px 150px 150px;
+      box-shadow: 0 12px 0 #d48c9c, 0 8px 20px rgba(200,80,100,0.4);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: #b3415c;
+      line-height: 1;
+      min-width: 180px;
+      border: 2px solid white;
+      transform: rotate(-1deg);
+      touch-action: manipulation;
+    }
+    .btn-yes {
+      background: #ffc1d0;
+      box-shadow: 0 12px 0 #b35f76, 0 8px 20px #d86f8b;
+    }
+    .btn-no {
+      background: #d5e2ff;
+      color: #4f3b60;
+      box-shadow: 0 12px 0 #8f7da3, 0 8px 20px #a18bb3;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 10;
+    }
+    .btn:hover {
+      transform: translateY(-6px) scale(1.05) rotate(0deg);
+      box-shadow: 0 6px 0 #b35f76, 0 12px 28px #f29bb0;
+    }
+    .btn-yes:hover {
+      background: #ffb2c6;
+    }
+    .btn-no:hover {
+      background: #c9d4f0;
+    }
+    .btn:active {
+      transform: translateY(6px) scale(1);
+      box-shadow: 0 4px 0 #8f5f6e;
+    }
+    /* Evasive + Scared styles */
+    .btn-no.evasive {
+      position: absolute !important;
+      pointer-events: auto;
+      transition: none;
+    }
+    .btn-no.scared {
+      background: #ff4444 !important; /* bright red to see movement */
+      animation: tremble 0.1s infinite;
+      box-shadow: 0 6px 0 #aa2222, 0 8px 20px #ff8888;
+      color: white;
+    }
+    @keyframes tremble {
+      0% { transform: translate(0,0) rotate(0deg); }
+      25% { transform: translate(3px,-2px) rotate(1.5deg); }
+      50% { transform: translate(-3px,2px) rotate(-1.5deg); }
+      75% { transform: translate(2px,3px) rotate(1deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+    .sad-creatures-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 30px auto 20px;
+      padding: 25px 15px;
+      background: rgba(255,255,240,0.6);
+      border-radius: 120px 120px 80px 80px;
+      max-width: 500px;
+      transition: all 0.4s ease;
+      border: 3px dashed #ffb7c5;
+    }
+    .sad-emojis {
+      font-size: 7rem;
+      line-height: 1.3;
+      filter: drop-shadow(2px 8px 12px rgba(0,0,0,0.2));
+      transition: transform 0.3s ease, filter 0.3s ease;
+      cursor: default;
+      white-space: nowrap;
+      min-height: 9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.2rem;
+    }
+    .sad-message {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #582b39;
+      background: rgba(255,240,240,0.8);
+      padding: 12px 25px;
+      border-radius: 60px;
+      margin-top: 10px;
+      font-family: 'Dancing Script', cursive;
+      border: 2px solid #ff99aa;
+    }
+    .surrender-option {
+      margin-top: 15px;
+      font-size: 1.3rem;
+      background: #ffe4e9;
+      padding: 10px 20px;
+      border-radius: 40px;
+      border: 2px dashed #ff8095;
+      color: #a52f4a;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-block;
+    }
+    .surrender-option:hover {
+      background: #ffccd6;
+      transform: scale(1.05);
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-card {
+      background: #fff5f7;
+      padding: 2.5rem 2rem;
+      border-radius: 80px 80px 50px 50px;
+      box-shadow: 0 30px 40px #e06f8b;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      border: 5px solid white;
+      position: relative;
+      animation: popIn 0.3s cubic-bezier(0.18,1.3,0.6,1);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.2); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .modal-card h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3rem;
+      color: #c14464;
+      margin-bottom: 10px;
+    }
+    .happy-bear-cats {
+      font-size: 5rem;
+      line-height: 1.3;
+      margin: 15px 0 10px;
+      display: inline-block;
+      animation: dance 0.5s infinite alternate ease-in-out;
+    }
+    @keyframes dance {
+      0% { transform: translateY(0) scale(1) rotate(0deg); }
+      100% { transform: translateY(-15px) scale(1.1) rotate(5deg); }
+    }
+    .date-options {
+      margin: 20px 0 15px;
+    }
+    .date-options p {
+      font-size: 1.8rem;
+      color: #b34b68;
+      margin-bottom: 15px;
+      font-family: 'Dancing Script', cursive;
+    }
+    .date-btn {
+      background: #ffe0e8;
+      border: 3px solid white;
+      font-size: 1.6rem;
+      padding: 12px 25px;
+      margin: 0 8px 10px;
+      border-radius: 50px;
+      box-shadow: 0 5px 0 #c06f86;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      color: #972b49;
+      transition: 0.1s;
+      min-width: 130px;
+      touch-action: manipulation;
+    }
+    .date-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 0 #c06f86;
+      background: #ffd0dc;
+    }
+    .date-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #c06f86;
+    }
+    .confirmation-message {
+      font-size: 2rem;
+      color: #b13e5c;
+      margin: 15px 0;
+      font-family: 'Dancing Script', cursive;
+    }
+    .close-modal {
+      background: #ffb0c0;
+      border: none;
+      font-size: 2rem;
+      padding: 10px 40px;
+      border-radius: 50px;
+      font-family: 'Dancing Script', cursive;
+      font-weight: bold;
+      color: #721f37;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #a55f70;
+      transition: 0.08s linear;
+      border: 2px solid white;
+      margin-top: 15px;
+      touch-action: manipulation;
+    }
+    .close-modal:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #a55f70;
+    }
+    .confetti-flower {
+      position: fixed;
+      font-size: 2.2rem;
+      pointer-events: none;
+      z-index: 200;
+      animation: burst 1.5s forwards ease-out;
+    }
+    @keyframes burst {
+      0% { transform: translate(0,0) scale(1) rotate(0); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0) rotate(360deg); opacity: 0; }
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 1.5rem;
+      color: #8f4960;
+      background: rgba(255,255,255,0.5);
+      padding: 12px 25px;
+      border-radius: 60px;
+      display: inline-block;
+      font-weight: 500;
+      backdrop-filter: blur(2px);
+      transition: 0.3s;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .footer:hover {
+      background: rgba(255,220,230,0.8);
+      transform: scale(1.02);
+      letter-spacing: 1px;
+    }
+    /* small debug message (can be removed) */
+    #debugMsg {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    @media (max-width: 550px) {
+      h1 { font-size: 2.5rem; }
+      .subhead { font-size: 1.3rem; }
+      .btn { font-size: 2rem; padding: 15px 25px; min-width: 130px; }
+      .sad-emojis { font-size: 4rem; min-height: 6rem; }
+      .sad-message { font-size: 1.6rem; }
+      .modal-card h2 { font-size: 2.5rem; }
+      .happy-bear-cats { font-size: 4rem; }
+      .date-btn { font-size: 1.3rem; padding: 10px 15px; min-width: 100px; }
+      .button-group { min-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dark-overlay" id="darkOverlay"></div>
+  <div class="floating-bg" id="floatingBg"></div>
+  <div class="content">
+    <h1>Will you be my Valentine?</h1>
+    <div class="subhead">Click below to answer <span>💖</span></div>
+    <div class="button-group" id="buttonGroup">
+      <button class="btn btn-yes" id="yesBtn">Yes 💘</button>
+      <button class="btn btn-no" id="noBtn">No 😿</button>
+    </div>
+    <div class="sad-creatures-container" id="sadContainer">
+      <div class="sad-emojis" id="sadEmojis">😿  🐻</div>
+      <div class="sad-message" id="sadMessage">Oh... 😢</div>
+      <div class="surrender-option" id="surrenderBtn" style="display: none;">😿 okay, I give up... take me! 💘</div>
+    </div>
+    <div class="footer" id="footer">made with 💖💗💓 by tamang for mai 💕💘💝</div>
+  </div>
+  <div class="modal-overlay" id="modalOverlay"><div class="modal-card" id="modalCard"></div></div>
+  <div id="debugMsg">Debug: Not evading yet</div>
+
+  <script>
+    (function() {
+      // floating background (unchanged)
+      const floatingBg = document.getElementById('floatingBg');
+      const heartSymbols = ['❤️', '🧡', '💖', '💗', '💓', '💘', '💝'];
+      const catSymbols = ['🐱', '😸', '😻', '😽', '🙀', '😿', '😾', '🐈', '🐈⬛'];
+      const flowerSymbols = ['🌸', '🌼', '🌻', '🌺', '🌷', '💐', '🌹', '🥀', '🌿', '🌸'];
+      for (let i = 0; i < 30; i++) {
+        let symbol;
+        const rand = Math.random();
+        if (rand < 0.4) symbol = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+        else if (rand < 0.7) symbol = catSymbols[Math.floor(Math.random() * catSymbols.length)];
+        else if (rand < 0.85) symbol = '🎈';
+        else symbol = flowerSymbols[Math.floor(Math.random() * flowerSymbols.length)];
+        createFloatingItem(symbol);
+      }
+      function createFloatingItem(symbol) {
+        const item = document.createElement('div');
+        item.className = 'float-item';
+        item.textContent = symbol;
+        const size = Math.random() * 2 + 1;
+        item.style.fontSize = size + 'rem';
+        item.style.left = Math.random() * 100 + '%';
+        item.style.animationDuration = (Math.random() * 6 + 5) + 's';
+        item.style.animationDelay = Math.random() * -10 + 's';
+        item.style.opacity = Math.random() * 0.4 + 0.2;
+        floatingBg.appendChild(item);
+      }
+      function addJoyToBackground() {
+        for (let i = 0; i < 20; i++) {
+          const symbol = Math.random() > 0.5 ? catSymbols[Math.floor(Math.random() * catSymbols.length)] : flowerSymbols[Math.floor(Math.random() * flowerSymbols.length)];
+          createFloatingItem(symbol);
+        }
+      }
+
+      // Messages and emojis
+      const pleadingMessages = ["Oh... 😿","Really? 💔","Please… don't break my heart 😭","How about cheesecake? 🍰","I'll bring you flowers 🌸","😭😭😭 PLEASE? I'm begging you! 🥺🙏"];
+      const sadnessEmojis = ["😿  🐻","😿 💔 🐻","😭  🐻‍❄️  💧","😭💔🐻‍❄️  🌧️","😭😭  💔💔  🐻‍❄️🐻‍❄️  🌧️🌧️  ⛈️"];
+
+      // DOM elements
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+      const modalOverlay = document.getElementById('modalOverlay');
+      const modalCard = document.getElementById('modalCard');
+      const sadContainer = document.getElementById('sadContainer');
+      const sadEmojis = document.getElementById('sadEmojis');
+      const sadMessage = document.getElementById('sadMessage');
+      const darkOverlay = document.getElementById('darkOverlay');
+      const surrenderBtn = document.getElementById('surrenderBtn');
+      const footer = document.getElementById('footer');
+      const buttonGroup = document.getElementById('buttonGroup');
+      const debugMsg = document.getElementById('debugMsg');
+
+      let noClickCount = 0;
+      let sadVisible = false;
+      let runawayActive = false;
+      let moveInterval = null;
+
+      const scaleFactors = [1.0, 0.8, 0.6, 0.4, 0.25];
+      const overlayOpacities = [0, 0.15, 0.3, 0.45, 0.6];
+
+      function getEffectIndex() { return Math.min(noClickCount, 4); }
+
+      function updateSadDisplay() {
+        const msgIndex = Math.min(noClickCount, pleadingMessages.length - 1);
+        sadMessage.textContent = pleadingMessages[msgIndex];
+        const effectIdx = getEffectIndex();
+        sadEmojis.textContent = sadnessEmojis[effectIdx];
+        const scale = scaleFactors[effectIdx];
+        sadEmojis.style.transform = `scale(${scale})`;
+        darkOverlay.style.opacity = overlayOpacities[effectIdx];
+        if (noClickCount >= 4) surrenderBtn.style.display = 'inline-block';
+        else surrenderBtn.style.display = 'none';
+      }
+
+      function resetSadState() {
+        sadVisible = false;
+        sadContainer.style.display = 'none';
+        noClickCount = 0;
+        darkOverlay.style.opacity = 0;
+        sadEmojis.style.transform = `scale(1)`;
+        sadEmojis.textContent = sadnessEmojis[0];
+        surrenderBtn.style.display = 'none';
+        if (moveInterval) { clearInterval(moveInterval); moveInterval = null; }
+        runawayActive = false;
+        noBtn.classList.remove('evasive', 'scared');
+        noBtn.style.position = '';
+        noBtn.style.left = '';
+        noBtn.style.top = '';
+        noBtn.textContent = 'No 😿';
+        debugMsg.textContent = 'Debug: Not evading';
+      }
+
+      // ----- Safe position generator (never overlaps Yes) with fallback -----
+      function getSafePosition() {
+        const groupRect = buttonGroup.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
+        const noWidth = noBtn.offsetWidth;
+        const noHeight = noBtn.offsetHeight;
+
+        const maxLeft = Math.max(0, groupRect.width - noWidth);
+        const maxTop = Math.max(0, groupRect.height - noHeight);
+
+        // If no space at all, return (0,0) but that will overlap; we'll try anyway
+        if (maxLeft <= 0 || maxTop <= 0) {
+          debugMsg.textContent = 'Debug: No space, using (0,0)';
+          return { left: 0, top: 0 };
+        }
+
+        let attempts = 0;
+        const maxAttempts = 50;
+        while (attempts < maxAttempts) {
+          const left = Math.random() * maxLeft;
+          const top = Math.random() * maxTop;
+
+          const noLeft = groupRect.left + left;
+          const noTop = groupRect.top + top;
+          const noRight = noLeft + noWidth;
+          const noBottom = noTop + noHeight;
+
+          const overlap = !(noRight < yesRect.left ||
+                            noLeft > yesRect.right ||
+                            noBottom < yesRect.top ||
+                            noTop > yesRect.bottom);
+          if (!overlap) {
+            return { left, top };
+          }
+          attempts++;
+        }
+
+        // Fallback: pick a corner far from Yes
+        let left, top;
+        if (yesRect.left < groupRect.left + groupRect.width / 2) {
+          left = maxLeft * 0.9; // right side
+        } else {
+          left = maxLeft * 0.1; // left side
+        }
+        if (yesRect.top < groupRect.top + groupRect.height / 2) {
+          top = maxTop * 0.9; // bottom
+        } else {
+          top = maxTop * 0.1; // top
+        }
+        debugMsg.textContent = 'Debug: Using fallback position';
+        return { left, top };
+      }
+
+      // ----- Move button to a new safe position -----
+      function moveNoButton() {
+        if (!runawayActive) return;
+        const pos = getSafePosition();
+        noBtn.style.left = pos.left + 'px';
+        noBtn.style.top = pos.top + 'px';
+        debugMsg.textContent = `Debug: Moved to (${pos.left.toFixed(0)}, ${pos.top.toFixed(0)})`;
+      }
+
+      // ----- Start constant jumping (every 50ms) -----
+      function startJumping() {
+        if (moveInterval) clearInterval(moveInterval);
+        moveInterval = setInterval(moveNoButton, 50);
+      }
+
+      // ----- Block all interactions on No button when evading -----
+      const blockEvents = ['mouseenter', 'mousedown', 'mouseup', 'click', 'touchstart', 'touchend'];
+      blockEvents.forEach(ev => {
+        noBtn.addEventListener(ev, (e) => {
+          if (runawayActive) {
+            e.preventDefault();
+            e.stopPropagation();
+            moveNoButton(); // extra move on interaction
+          }
+        }, { passive: false });
+      });
+
+      // Also move on mouse/touch move near button
+      buttonGroup.addEventListener('mousemove', (e) => {
+        if (!runawayActive) return;
+        const btnRect = noBtn.getBoundingClientRect();
+        const dist = Math.hypot(e.clientX - (btnRect.left + btnRect.width/2), e.clientY - (btnRect.top + btnRect.height/2));
+        if (dist < 300) moveNoButton();
+      });
+      buttonGroup.addEventListener('touchmove', (e) => {
+        if (!runawayActive || e.touches.length === 0) return;
+        const touch = e.touches[0];
+        const btnRect = noBtn.getBoundingClientRect();
+        const dist = Math.hypot(touch.clientX - (btnRect.left + btnRect.width/2), touch.clientY - (btnRect.top + btnRect.height/2));
+        if (dist < 300) moveNoButton();
+      }, { passive: true });
+
+      // ----- Click handling for first 5 clicks -----
+      noBtn.addEventListener('click', function(e) {
+        if (!runawayActive) {
+          e.stopPropagation();
+          if (noClickCount < 5) noClickCount++;
+          if (noClickCount >= 5 && !runawayActive) {
+            runawayActive = true;
+            noBtn.classList.add('evasive', 'scared');
+            noBtn.style.position = 'absolute';
+            noBtn.textContent = 'RUN! 🏃'; // obvious text
+            moveNoButton(); // initial move
+            startJumping(); // start constant jumping
+            debugMsg.textContent = 'Debug: EVASIVE MODE ACTIVE';
+          }
+          if (!sadVisible) {
+            sadVisible = true;
+            sadContainer.style.display = 'flex';
+          }
+          updateSadDisplay();
+          sadEmojis.style.animation = 'none';
+          sadEmojis.offsetHeight;
+          sadEmojis.style.animation = 'shake 0.3s ease';
+          setTimeout(() => sadEmojis.style.animation = '', 300);
+        }
+      });
+
+      // ----- YES handler (unchanged) -----
+      function showDateOptions() {
+        modalCard.innerHTML = `
+          <h2>💘 Yay! 💘</h2>
+          <div class="happy-bear-cats">🐻❤️😻🐱💃</div>
+          <p>You made my day!</p>
+          <div class="date-options">
+            <p>Where should we go? 💕</p>
+            <button class="date-btn" id="dateDinner">🍝 Dinner</button>
+            <button class="date-btn" id="dateMovie">🎬 Movie</button>
+            <button class="date-btn" id="dateSurprise">🎉 Surprise</button>
+          </div>
+          <button class="close-modal" id="closeModalBtn">close 💕</button>
+        `;
+        document.getElementById('dateDinner').addEventListener('click', () => handleDateChoice('Dinner'));
+        document.getElementById('dateMovie').addEventListener('click', () => handleDateChoice('Movie'));
+        document.getElementById('dateSurprise').addEventListener('click', () => handleDateChoice('Surprise'));
+        document.getElementById('closeModalBtn').addEventListener('click', () => modalOverlay.style.display = 'none');
+      }
+      function handleDateChoice(choice) {
+        modalCard.innerHTML = `
+          <h2>💘 Perfect! 💘</h2>
+          <div class="happy-bear-cats">🐻❤️😻🐱💃</div>
+          <div class="confirmation-message">${choice} it is! 💕</div>
+          <p>I can't wait! 💖</p>
+          <button class="close-modal" id="closeModalBtn">close 💕</button>
+        `;
+        document.getElementById('closeModalBtn').addEventListener('click', () => modalOverlay.style.display = 'none');
+        burstJoy();
+      }
+      function burstJoy() {
+        const emojis = ['🌸','🌼','🌻','🌺','🌷','💐','🌹','❤️','💖','🐱','😻','🎈','✨','🥳','💃'];
+        for (let i = 0; i < 50; i++) {
+          const conf = document.createElement('div');
+          conf.className = 'confetti-flower';
+          conf.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          conf.style.left = Math.random() * 100 + '%';
+          conf.style.top = Math.random() * 100 + '%';
+          conf.style.fontSize = (Math.random() * 2.5 + 1.5) + 'rem';
+          const dx = (Math.random() - 0.5) * 500 + 'px';
+          const dy = (Math.random() - 0.8) * 400 - 150 + 'px';
+          conf.style.setProperty('--dx', dx);
+          conf.style.setProperty('--dy', dy);
+          conf.style.animationDuration = (Math.random() * 1.2 + 0.8) + 's';
+          document.body.appendChild(conf);
+          setTimeout(() => conf.remove(), 1500);
+        }
+      }
+      function triggerYes() {
+        if (sadVisible) resetSadState();
+        else {
+          sadContainer.style.display = 'none';
+          darkOverlay.style.opacity = 0;
+          noClickCount = 0;
+          sadEmojis.textContent = sadnessEmojis[0];
+          surrenderBtn.style.display = 'none';
+        }
+        showDateOptions();
+        modalOverlay.style.display = 'flex';
+        burstJoy();
+        addJoyToBackground();
+        try {
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          oscillator.frequency.value = 880;
+          gainNode.gain.value = 0.1;
+          oscillator.start();
+          oscillator.stop(audioCtx.currentTime + 0.3);
+        } catch (e) {}
+      }
+      yesBtn.addEventListener('click', triggerYes);
+      surrenderBtn.addEventListener('click', () => {
+        triggerYes();
+        surrenderBtn.style.display = 'none';
+        resetSadState();
+      });
+
+      // Shake animation style
+      const style = document.createElement('style');
+      style.innerHTML = `@keyframes shake { 0% { transform: rotate(0deg) scale(var(--scale,1)); } 25% { transform: rotate(5deg) scale(var(--scale,1)); } 50% { transform: rotate(-5deg) scale(var(--scale,1)); } 75% { transform: rotate(3deg) scale(var(--scale,1)); } 100% { transform: rotate(0deg) scale(var(--scale,1)); } }`;
+      document.head.appendChild(style);
+
+      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') modalOverlay.style.display = 'none'; });
+      footer.addEventListener('click', () => { burstJoy(); footer.style.backgroundColor = '#ffd9e6'; setTimeout(() => footer.style.backgroundColor = '', 300); });
+      resetSadState();
+    })();
+  </script>
+</body>
+</html>
